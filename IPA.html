@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tim IPA - Buzzer</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        #btn { 
+            width: 100%;
+            height: 100%;
+            background-color: #dc3545; /* Merah IPA */
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #btn.active {
+            background-color: green; /* Hijau saat ditekan */
+            transform: scale(0.98);
+        }
+
+        .instruction {
+            pointer-events: none;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Kembali</a>
+
+    <button id="btn">
+        <span class="instruction">TEKAN (IPA)</span>
+        <span style="font-size: 1rem; opacity: 0.8; margin-top: 10px;">augh.mp3</span>
+    </button>
+
+    <audio id="aud" src="augh.mp3"></audio>
+
+    <script>
+        const button = document.getElementById("btn");
+        const audio = document.getElementById("aud");
+
+        function playAudio() {
+            audio.currentTime = 0;
+            audio.play();
+            button.classList.add('active');
+        }
+
+        function stopActive() {
+            button.classList.remove('active');
+        }
+
+        // Untuk mouse
+        button.addEventListener("mousedown", playAudio);
+        button.addEventListener("mouseup", stopActive);
+        button.addEventListener("mouseleave", stopActive); // Jika kursor keluar saat masih tekan
+
+        // Untuk touchscreen
+        button.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            playAudio();
+        });
+        
+        button.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            stopActive();
+        });
+        
+        button.addEventListener("touchcancel", stopActive); // Jika touch dibatalkan
+    </script>
+</body>
+</html>
